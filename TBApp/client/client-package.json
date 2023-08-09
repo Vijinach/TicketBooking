@@ -1,0 +1,6 @@
+{
+    "name": "TBapp",
+    "version": "0.0.2",
+    "homepage": "/__catalyst/auth/login",
+    "login_redirect":"index.html"
+}
