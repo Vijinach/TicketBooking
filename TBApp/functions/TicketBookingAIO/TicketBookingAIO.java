@@ -86,6 +86,7 @@ public class TicketBookingAIO implements CatalystAdvancedIOHandler {
 				response.getWriter().write(jsonArray.toString());
 
 			} else if ((url.equals("/admin")) && method.equals(POST)) {
+				LOGGER.log(Level.INFO, "inside post");
 
 				ServletInputStream requestBody = request.getInputStream();
 
@@ -94,13 +95,27 @@ public class TicketBookingAIO implements CatalystAdvancedIOHandler {
 				JSONObject jsonObject = (JSONObject) jsonParser.parse(new InputStreamReader(requestBody, "UTF-8"));
 
 				String MovieName = (String) jsonObject.get("movie-name");
-
+				String Location = (String) jsonObject.get("location");
+				String TheatreName = (String) jsonObject.get("theatre-name");
+				String SeatCount = (String) jsonObject.get("seat-count");
+				String Amount = (String) jsonObject.get("amount");
+				LOGGER.log(Level.INFO, MovieName);
+				LOGGER.log(Level.INFO, Location);
 				ZCRowObject row = ZCRowObject.getInstance();
 				row.set("MovieName", MovieName);
+				row.set("Location", Location);
+				row.set("TheatreName", TheatreName);
+				row.set("SeatCount", SeatCount);
+				row.set("Amount", Amount);
 				ZCObject.getInstance().getTableInstance(TABLENAME).insertRow(row);
-				response.setStatus(200);
-			}
 
+				responseData.put("data", "Movie name inserted!!!!");
+				LOGGER.log(Level.INFO, responseData.get("data").toString());
+				response.setStatus(200);
+				response.setContentType("application/json");
+				response.getWriter().write(responseData.toString());
+
+			}
 		} catch (Exception e) {
 
 			// The actions are logged. You can check the logs from Catalyst Logs.
