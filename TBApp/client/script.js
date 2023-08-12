@@ -1,6 +1,10 @@
 function postMovies() {
   debugger
 var MovieName = $("#movie-name").val();
+var Location = $("#location").val();
+var TheatreName = $("#theatre-name").val();
+var SeatCount = $("#seat-count").val();
+var Amount = $("#amount").val();
  debugger
     // Fires an Ajax call to the URL defined in the index.js function file
  
@@ -10,11 +14,15 @@ url: "/server/TicketBookingAIO/admin", //If your Advanced I/O function is coded 
 type: "post",
 contentType: "application/json",
 data: JSON.stringify({
-"movie-name": MovieName
+"movie-name": MovieName,
+"location": Location,
+"theatre-name": TheatreName,
+"seat-count": SeatCount,
+"amount": Amount
 }),
 success: function (data) {
   debugger
-alert(data.message);
+alert(data.response);
 },
 error: function (error) {
   debugger
