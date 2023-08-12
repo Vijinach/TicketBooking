@@ -5,13 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>TicketBookingApp</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://static.zohocdn.com/catalyst/sdk/js/4.0.0/catalystWebSDK.js"></script>
+<script src="/__catalyst/sdk/init.js"></script>
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://static.zohocdn.com/catalyst/sdk/js/4.0.0/catalystWebSDK.js"></script>
-    <script src="/__catalyst/sdk/init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
     </script>
@@ -24,7 +24,7 @@
     <br>
           <br>
           <center>
-              <h1>ADMIN LOGIN</h1>
+              <h1>ADMIN SECTOR</h1>
           </center>
           <div class="container">
               <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -45,9 +45,29 @@
                         <input type="text" class="form-control" id="movie-name" aria-describedby="moviename"
                             placeholder="Enter Movie Name">
                     </div>
+                    <div class="location">
+                        <label for="Location"><b>Enter Location:</b></label>
+                        <input type="text" class="form-control" id="location" aria-describedby="location"
+                            placeholder="Enter Location">
+                    </div>
+                    <div class="theatre-name">
+                        <label for="Theatre-Name"><b>Enter Theatre Name:</b></label>
+                        <input type="text" class="form-control" id="theatre-name" aria-describedby="theatre-name"
+                            placeholder="Enter Theatre Name">
+                    </div>
+                    <div class="seat-count">
+                        <label for="Seat"><b>Enter Seat Count:</b></label>
+                        <input type="number" class="form-control" id="seat-count" aria-describedby="seat-count"
+                            placeholder="Enter seat count">
+                    </div>
+                    <div class="amount">
+                        <label for="Amount"><b>Enter Amount:</b></label>
+                        <input type="number" class="form-control" id="amount" aria-describedby="amount"
+                            placeholder="Enter amount">
+                    </div>
                 </div>
                 <button type="submit" class="movie-name"
-                    onclick="postMovies();return false;">Report</button>
+                    onclick="postMovies()">Report</button>
             </form>
               </body>
 </html>
