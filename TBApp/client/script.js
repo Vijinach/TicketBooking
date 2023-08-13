@@ -3,6 +3,12 @@ function postMovies() {
 var MovieName = $("#movie-name").val();
 var Location = $("#location").val();
 var TheatreName = $("#theatre-name").val();
+var STime = $("#show-time").val();
+debugger
+var ShowTime = moment(STime).format("YYYY-MM-DD HH:mm:ss");
+debugger
+console.log(ShowTime);
+debugger
 var SeatCount = $("#seat-count").val();
 var Amount = $("#amount").val();
  debugger
@@ -17,6 +23,7 @@ data: JSON.stringify({
 "movie-name": MovieName,
 "location": Location,
 "theatre-name": TheatreName,
+"show-time": ShowTime,
 "seat-count": SeatCount,
 "amount": Amount
 }),
