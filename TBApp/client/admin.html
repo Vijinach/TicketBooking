@@ -18,13 +18,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
     <script src="script.js"></script>
 </head>
 <body>
     <br>
           <br>
           <center>
-              <h1>ADMIN SECTOR</h1>
+              <h1>ADMIN PAGE</h1>
           </center>
           <div class="container">
               <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -54,6 +55,11 @@
                         <label for="Theatre-Name"><b>Enter Theatre Name:</b></label>
                         <input type="text" class="form-control" id="theatre-name" aria-describedby="theatre-name"
                             placeholder="Enter Theatre Name">
+                    </div>
+                    <div class="show-time">
+                        <label for="Show-time"><b>Enter Show time:</b></label>
+                        <input type="datetime-local" class="form-control" id="show-time" aria-describedby="show-time"
+                            placeholder="Enter Show Time">
                     </div>
                     <div class="seat-count">
                         <label for="Seat"><b>Enter Seat Count:</b></label>
