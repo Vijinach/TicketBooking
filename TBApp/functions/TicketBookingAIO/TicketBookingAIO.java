@@ -97,6 +97,7 @@ public class TicketBookingAIO implements CatalystAdvancedIOHandler {
 				String MovieName = (String) jsonObject.get("movie-name");
 				String Location = (String) jsonObject.get("location");
 				String TheatreName = (String) jsonObject.get("theatre-name");
+				String ShowTime = (String) jsonObject.get("show-time");
 				String SeatCount = (String) jsonObject.get("seat-count");
 				String Amount = (String) jsonObject.get("amount");
 				LOGGER.log(Level.INFO, MovieName);
@@ -105,17 +106,19 @@ public class TicketBookingAIO implements CatalystAdvancedIOHandler {
 				row.set("MovieName", MovieName);
 				row.set("Location", Location);
 				row.set("TheatreName", TheatreName);
+				row.set("ShowTime", ShowTime);
 				row.set("SeatCount", SeatCount);
 				row.set("Amount", Amount);
 				ZCObject.getInstance().getTableInstance(TABLENAME).insertRow(row);
 
-				responseData.put("data", "Movie name inserted!!!!");
+				responseData.put("data", "Details inserted successfully!!!!");
 				LOGGER.log(Level.INFO, responseData.get("data").toString());
 				response.setStatus(200);
 				response.setContentType("application/json");
 				response.getWriter().write(responseData.toString());
 
 			}
+
 		} catch (Exception e) {
 
 			// The actions are logged. You can check the logs from Catalyst Logs.
