@@ -1,7 +1,11 @@
 import java.io.InputStreamReader;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -85,6 +89,28 @@ public class TicketBookingAIO implements CatalystAdvancedIOHandler {
 				response.setContentType("application/json");
 				response.getWriter().write(jsonArray.toString());
 
+			}
+			if ((url.equals("/admin")) && method.equals(GET)) {
+				JSONArray jsonArray = new JSONArray();
+				String query = "select * from " + TABLENAME1;
+				LOGGER.log(Level.INFO, query);
+				// Gets the ZCQL instance and executes query using the query string
+
+				ArrayList<ZCRowObject> rowList = ZCQL.getInstance().executeQuery(query);
+				LOGGER.log(Level.INFO, "" + rowList.size());
+				for (int i = 0; i < rowList.size(); i++) {
+					JSONObject formDetailsJson = new JSONObject();
+					formDetailsJson.put("MovieName", rowList.get(i).get(TABLENAME1, "MovieName"));
+					formDetailsJson.put("MovieID", rowList.get(i).get(TABLENAME1, "MovieID"));
+					formDetailsJson.put("TotalAmount", rowList.get(i).get(TABLENAME1, "TotalAmount"));
+					formDetailsJson.put("BookedDate", rowList.get(i).get(TABLENAME1, "BookedDate"));
+					jsonArray.put(formDetailsJson);
+				}
+				LOGGER.log(Level.INFO, jsonArray.toString());
+				response.setStatus(200);
+				response.setContentType("application/json");
+				response.getWriter().write(jsonArray.toString());
+
 			} else if ((url.equals("/admin")) && method.equals(POST)) {
 				LOGGER.log(Level.INFO, "inside post");
 
@@ -123,7 +149,7 @@ public class TicketBookingAIO implements CatalystAdvancedIOHandler {
 
 			// The actions are logged. You can check the logs from Catalyst Logs.
 
-			LOGGER.log(Level.SEVERE, "Exception in AlienCityAIO", e);
+			LOGGER.log(Level.SEVERE, "Exception in TicketBookingAIO", e);
 
 			responseData.put("error", "Internal server error occurred. Please try again in some time.");
 
