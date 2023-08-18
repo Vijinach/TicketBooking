@@ -34,8 +34,8 @@
                           aria-controls="check" aria-selected="true">Add</a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link" id="report-tab" data-toggle="tab" href="#report" role="tab" aria-controls="report"
-                          aria-selected="false">View</a>
+                      <a onclick="getBookings()" class="nav-link" id="report-tab" data-toggle="tab" href="#report" role="tab" aria-controls="report"
+                          aria-selected="false">View Total Amount</a>
                   </li>
               </ul>
               </div>
@@ -75,5 +75,13 @@
                 <button type="submit" class="movie-name"
                     onclick="postMovies()">Report</button>
             </form>
+            <div class="tab-content" id="myTab">
+                <div class="tab-pane fade show active" id="report" role="tabpanel" aria-labelledby="report-tab">
+                    <!-- Content for the "Book Tickets" tab -->
+                    <div id="ShowMovies">
+                        <!-- Your content here -->
+                    </div>
+                </div>
+            </div>
               </body>
 </html>
