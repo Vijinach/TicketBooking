@@ -33,15 +33,66 @@ debugger
         }
         debugger
      console.log(displayData.ROWID)
-          gulp["<center>Book</center>"] = '<center><button onclick="showAlert(displayData.ROWID)">Book</button></center>'
-      
+     gulp["<center>Book</center>"] = `<center><a href="javascript:BookingPopup('${displayData.ROWID}','${displayData.MovieName}','${displayData.SeatCount}','${displayData.Amount}','${displayData.TheatreName}','${displayData.ShowTime}','${displayData.Location}')">Book</a></center>`,
       tabledata.push(gulp);
       }
   console.log(tabledata)
   return tabledata;
 }
-function showAlert(){
-  debugger
+function BookingPopup(ROWID,MovieName,SeatCount,Amount,TheatreName,ShowTime,Location) {
+  debugger;
+
+  $("#BookingModal").modal("show");
+  document.getElementById("book-btn").value = ROWID;
+  document.getElementById("MovieName").innerHTML = MovieName;
+  document.getElementById("SeatCount").innerHTML = SeatCount;
+  document.getElementById("Amount").innerHTML = Amount;
+  document.getElementById("TheatreName").innerHTML = TheatreName;
+  document.getElementById("ShowTime").innerHTML = ShowTime;
+  document.getElementById("Location").innerHTML = Location;
+}
+function pay() {
+  debugger;
+
+  const MovieID = document.getElementById("book-btn").value;
+  const MovieName = document.getElementById("MovieName").textContent
+  const BSeatCount = document.getElementById("BookedSeatCount").value;
+  const TheatreName = document.getElementById("TheatreName").textContent;
+  const Amount = document.getElementById("Amount").textContent;
+  const ASeatCount = document.getElementById("SeatCount").textContent;
+  const TotalAmount = parseInt(BSeatCount) *  parseInt(Amount) ;
+  var date = moment();
+
+  const BookedDate = date.format('YYYY-MM-DD');
+  console.log(BookedDate); // "17/06/2022"
+ 
+  $.ajax({
+    url: "/server/TicketBookingAIO/bookTicket",
+    type: "POST",
+    data : JSON.stringify({
+    "MovieID" : MovieID,
+    "MovieName" : MovieName,
+    "BookedDate" : BookedDate,
+    "TotalAmount" : TotalAmount,
+    "BSeatCount" : BSeatCount,
+    "ASeatCount" :ASeatCount,
+    "TheatreName": TheatreName,
+
+    }),
+    contentType : "application/json", 
+    success: function (data) {
+      debugger;
+      console.log(data);
+      alert(data.data);
+      window.location.reload();
+    },
+    error: function (error) {
+      debugger;
+      console.log(error);
+      alert(error.data);
+      window.location.reload();
+    },
+  });
 }
 function getBookings() {
 debugger
@@ -72,6 +123,8 @@ debugger
           "Movie ID": displayData.MovieID,
           "Total Amount": displayData.TotalAmount,
           "Booked Date": displayData.BookedDate,
+          "Theatre Name": displayData.TheatreName,
+          "Seat Count": displayData.SeatCount,
         }
         debugger
       tabledata.push(gulp);
@@ -106,11 +159,28 @@ function renderTable(respData) {
       tr = table.insertRow(-1);
 
       for (var j = 0; j < col.length; j++) {
-          var tabCell = tr.insertCell(-1);
+                  var tabCell = tr.insertCell(-1);
           tabCell.innerHTML = respData[i][col[j]];
       }
   }
   var divContainer = document.getElementById("ShowMovies");
   divContainer.innerHTML = "";
   divContainer.appendChild(table);
+}
+
+function logout () {
+  debugger;
+  //catalyst.auth.signOut(location.protocol+"//"+ location.hostname + ":3000/__catalyst/auth/login")  //local
+  catalyst.auth.signOut(location.protocol+"//"+ location.hostname + "/app/") //dev
+}
+
+async function checklogin() {
+  debugger;
+  await catalyst.auth.isUserAuthenticated((user)=> {
+
+  }).catch((err) => {
+    alert("You are not logged in. Please login to continue. Redirecting to login page.");
+    //window.location.replace(location.protocol+"//"+ location.hostname + ":3000/__catalyst/auth/login"); //local
+   window.location.replace(location.protocol+"//"+ location.hostname + "/__catalyst/auth/login"); //dev
+  })
 }
