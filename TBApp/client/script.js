@@ -110,3 +110,19 @@ function getBookings() {
     divContainer.innerHTML = "";
     divContainer.appendChild(table);
   }
+  function logout () {
+    debugger;
+    //catalyst.auth.signOut(location.protocol+"//"+ location.hostname + ":3000/__catalyst/auth/login")  //local
+    catalyst.auth.signOut(location.protocol+"//"+ location.hostname + "/app/") //dev
+  }
+  
+  async function checklogin() {
+    debugger;
+    await catalyst.auth.isUserAuthenticated((user)=> {
+  
+    }).catch((err) => {
+      alert("You are not logged in. Please login to continue. Redirecting to login page.");
+      //window.location.replace(location.protocol+"//"+ location.hostname + ":3000/__catalyst/auth/login"); //local
+     window.location.replace(location.protocol+"//"+ location.hostname + "/__catalyst/auth/login"); //dev
+    })
+  }
