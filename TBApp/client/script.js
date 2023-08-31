@@ -40,7 +40,7 @@ alert(error.message);
 function getBookings() {
   debugger
     $.ajax({
-    url: "/server/TicketBookingAIO/getBookings", 
+    url: "/server/TicketBookingAIO/admin", 
     type: "GET",
     success: function (Response) {
       debugger
@@ -66,6 +66,8 @@ function getBookings() {
             "Movie ID": displayData.MovieID,
             "Total Amount": displayData.TotalAmount,
             "Booked Date": displayData.BookedDate,
+            "Theatre Name": displayData.TheatreName,
+            "Seat Count": displayData.SeatCount,
           }
           debugger
         tabledata.push(gulp);
