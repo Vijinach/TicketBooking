@@ -21,7 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
     <script src="script.js"></script>
 </head>
-<body>
+<body onload = "checklogin();return false;">
     <br>
           <br>
           <center>
@@ -34,9 +34,9 @@
                           aria-controls="check" aria-selected="true">Add</a>
                   </li>
                   <li class="nav-item">
-                      <a onclick="getBookings()" class="nav-link" id="report-tab" data-toggle="tab" href="#report" role="tab" aria-controls="report"
-                          aria-selected="false">View Total Amount</a>
-                  </li>
+                    <a onclick="getBookings()" class="nav-link" id="report-tab" data-toggle="tab" href="#report" role="tab" aria-controls="report"
+                        aria-selected="false">View Total Amount</a>
+                </li>
               </ul>
               </div>
               <form>
@@ -75,13 +75,11 @@
                 <button type="submit" class="movie-name"
                     onclick="postMovies()">Report</button>
             </form>
-            <div class="tab-content" id="myTab">
-                <div class="tab-pane fade show active" id="report" role="tabpanel" aria-labelledby="report-tab">
+                <div class="tab-pane fade show active" id="report-tab" role="tab" aria-labelledby="report-tab">
                     <!-- Content for the "Book Tickets" tab -->
                     <div id="ShowMovies">
                         <!-- Your content here -->
                     </div>
                 </div>
-            </div>
               </body>
 </html>
