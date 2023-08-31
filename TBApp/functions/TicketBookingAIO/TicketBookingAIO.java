@@ -1,4 +1,5 @@
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -6,14 +7,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.catalyst.advanced.CatalystAdvancedIOHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zc.component.object.ZCObject;
 import com.zc.component.object.ZCRowObject;
+import com.zc.component.object.ZCTable;
+
 import com.zc.component.zcql.ZCQL;
 
 import org.json.simple.JSONObject;
@@ -60,6 +65,7 @@ public class TicketBookingAIO implements CatalystAdvancedIOHandler {
 					formDetailsJson.put("Location", rowList.get(i).get(TABLENAME, "Location"));
 					formDetailsJson.put("ShowTime", rowList.get(i).get(TABLENAME, "ShowTime"));
 					formDetailsJson.put("TheatreName", rowList.get(i).get(TABLENAME, "TheatreName"));
+					formDetailsJson.put("ROWID", rowList.get(i).get(TABLENAME, "ROWID"));
 					jsonArray.put(formDetailsJson);
 				}
 				LOGGER.log(Level.INFO, jsonArray.toString());
@@ -82,6 +88,8 @@ public class TicketBookingAIO implements CatalystAdvancedIOHandler {
 					formDetailsJson.put("MovieID", rowList.get(i).get(TABLENAME1, "MovieID"));
 					formDetailsJson.put("TotalAmount", rowList.get(i).get(TABLENAME1, "TotalAmount"));
 					formDetailsJson.put("BookedDate", rowList.get(i).get(TABLENAME1, "BookedDate"));
+					formDetailsJson.put("TheatreName", rowList.get(i).get(TABLENAME1, "TheatreName"));
+					formDetailsJson.put("SeatCount", rowList.get(i).get(TABLENAME1, "SeatCount"));
 					jsonArray.put(formDetailsJson);
 				}
 				LOGGER.log(Level.INFO, jsonArray.toString());
@@ -104,6 +112,8 @@ public class TicketBookingAIO implements CatalystAdvancedIOHandler {
 					formDetailsJson.put("MovieID", rowList.get(i).get(TABLENAME1, "MovieID"));
 					formDetailsJson.put("TotalAmount", rowList.get(i).get(TABLENAME1, "TotalAmount"));
 					formDetailsJson.put("BookedDate", rowList.get(i).get(TABLENAME1, "BookedDate"));
+					formDetailsJson.put("TheatreName", rowList.get(i).get(TABLENAME1, "TheatreName"));
+					formDetailsJson.put("SeatCount", rowList.get(i).get(TABLENAME1, "SeatCount"));
 					jsonArray.put(formDetailsJson);
 				}
 				LOGGER.log(Level.INFO, jsonArray.toString());
@@ -142,6 +152,67 @@ public class TicketBookingAIO implements CatalystAdvancedIOHandler {
 				response.setStatus(200);
 				response.setContentType("application/json");
 				response.getWriter().write(responseData.toString());
+
+			} else if ((url.equals("/bookTicket")) && method.equals(POST)) {
+				LOGGER.log(Level.INFO, "inside book ticket");
+				ServletInputStream requestBody = request.getInputStream();
+
+				JSONParser jsonParser = new JSONParser();
+
+				JSONObject jsonObject = (JSONObject) jsonParser.parse(new InputStreamReader(requestBody, "UTF-8"));
+
+				String SMovieID = (String) jsonObject.get("MovieID");
+				BigInteger MovieID = new BigInteger(SMovieID);
+				String MovieName = (String) jsonObject.get("MovieName");
+				String SBookedDate = (String) jsonObject.get("BookedDate");
+				Date BookedDate = new SimpleDateFormat("YYYY-MM-DD").parse(SBookedDate);
+				String TheatreName = (String) jsonObject.get("TheatreName");
+				int ASeatCount = Integer.parseInt((String) jsonObject.get("ASeatCount"));
+				int BSeatCount = Integer.parseInt((String) jsonObject.get("BSeatCount"));
+				Double TotalAmount = ((Long) jsonObject.get("TotalAmount")).doubleValue();
+				LOGGER.log(Level.INFO, MovieName);
+
+				// Create a base Object Instance
+				ZCObject object = ZCObject.getInstance();
+				// Get a Table Instance referring the tableID on base object
+				ZCTable tab = object.getTable(TABLENAME1);
+				// Create a row instance
+				ZCRowObject row = ZCRowObject.getInstance();
+
+				// Add the single row to table by calling insertRow() method
+				if (ASeatCount > 0 && BSeatCount > 0 && BSeatCount <= ASeatCount) {
+
+					row.set("BookedDate", SBookedDate);
+					row.set("TotalAmount", TotalAmount);
+					row.set("MovieID", MovieID);
+					row.set("MovieName", MovieName);
+					row.set("TheatreName", TheatreName);
+					row.set("SeatCount", BSeatCount);
+					LOGGER.log(Level.INFO, new ObjectMapper().writeValueAsString(row));
+					List brows = new ArrayList();
+					brows.add(row);
+					ZCObject.getInstance().getTableInstance(TABLENAME1).insertRow(row);
+
+					List rows = new ArrayList();
+					ZCRowObject row2 = ZCRowObject.getInstance();
+
+					row2.set("ROWID", MovieID);
+					row2.set("SeatCount", ASeatCount - BSeatCount);
+					rows.add(row2);
+					LOGGER.log(Level.INFO, new ObjectMapper().writeValueAsString(row));
+					ZCObject.getInstance().getTableInstance(TABLENAME).updateRows(rows);
+					responseData.put("data", "Details updated successfully!!!!");
+					LOGGER.log(Level.INFO, responseData.get("data").toString());
+					response.setStatus(200);
+					response.setContentType("application/json");
+					response.getWriter().write(responseData.toString());
+				} else {
+					responseData.put("data", "Booked Seat count is greater than available seat count");
+					LOGGER.log(Level.INFO, responseData.get("data").toString());
+					response.setStatus(200);
+					response.setContentType("application/json");
+					response.getWriter().write(responseData.toString());
+				}
 
 			}
 
