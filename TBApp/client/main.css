@@ -101,3 +101,14 @@ input {
 button {
     padding: 5px 10px;
 }
+.btn{
+    display:flex;
+    align-items: right;
+    width: 100%;
+}
+#logout{
+    background-color: aqua;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
